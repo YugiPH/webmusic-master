@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import SongCard from '../components/SongCard';
 import { Layout } from 'antd';
+import getUserInfo from '../utils/getUserInfo';
+import { getFavoriteSong } from '../apis/favoriteSong';
 
 const { Content } = Layout;
 
 const Home = () => {
     const [data, setData] = useState([]);
+    const [favorite, setFavorite] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const userInfo = getUserInfo()
+    const fetchfavorite = async () => {
+        const response = await getFavoriteSong(userInfo._id)
+        if (response.data) {
+            setFavorite(response.data.favoriteId)
+        }
+    }
     useEffect(() => {
-        fetch('http://localhost:8080/songs') // Thay URL này bằng URL thực tế của API
+        fetchfavorite()
+        fetch('http://localhost:8080/songs')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -17,7 +28,6 @@ const Home = () => {
                 return response.json();
             })
             .then(responseData => {
-                console.log("Dữ liệu từ API:", responseData);
                 if (Array.isArray(responseData.data) && responseData.data.length > 0) {
                     setData(responseData.data);
                 } else {
@@ -45,7 +55,8 @@ const Home = () => {
                             id={song._id}
                             title={song.title}
                             imageUrl={song.imageUrl}
-
+                            favoriteId={song.favoriteId}
+                        // isFavorite={}
                         />
                     ))
                 )}

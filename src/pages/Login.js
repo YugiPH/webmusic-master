@@ -1,11 +1,20 @@
 import React from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-import { NavLink } from 'react-router-dom';
+import { LockOutlined, GoogleOutlined } from '@ant-design/icons';
+import { Button, Form, Input, message } from 'antd';
+import { NavLink, useNavigate } from 'react-router-dom';
+import login from '../apis/login';
+
 const Login = () => {
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+    const navigate = useNavigate()
+    const onFinish = async (values) => {
+        const res = await login(values)
+        if (res.ok) {
+            message.success("Dang nhap thanh cong!")
+            localStorage.setItem('userInfo', JSON.stringify(res.data))
+            navigate('/')
+        }
     };
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
             <h2>Đăng nhập</h2>
@@ -20,16 +29,18 @@ const Login = () => {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Please input your Email!',
+                            type: 'email'
                         },
                     ]}
                 >
-                    <Input prefix={<UserOutlined />} placeholder="Username" />
+                    <Input prefix={<GoogleOutlined />} placeholder="Email" />
                 </Form.Item>
+
                 <Form.Item
                     name="password"
                     rules={[

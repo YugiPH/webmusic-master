@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Table, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons'
+import { Popconfirm, message } from "antd";
+
 
 const SongManage = () => {
     const [loading, setLoading] = useState(true);
@@ -21,7 +25,7 @@ const SongManage = () => {
             .then(responseData => {
                 console.log("Dữ liệu từ API:", responseData);
                 if (Array.isArray(responseData.data) && responseData.data.length > 0) {
-                    setData(responseData.data);
+                    setData(responseData.data.map(song => ({ ...song, key: song._id })));
                 } else {
                     setData([]);
                 }
@@ -45,57 +49,70 @@ const SongManage = () => {
                 method: 'DELETE'
             });
             if (response.ok) {
-                console.log("Bài hát đã được xóa thành công");
+                message.success("Bài hát đã được xóa thành công");
                 setData(data.filter(song => song._id !== id));
             } else {
-                console.error("Không thể xóa bài hát");
+                message.error("Không thể xóa bài hát");
             }
         } catch (error) {
             console.error('Lỗi khi xóa bài hát: ', error);
         }
     };
 
+    const columns = [
+        {
+            title: 'Title',
+            dataIndex: 'title',
+            key: 'title',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Artist',
+            dataIndex: ['artist', '_id'],
+            key: 'artist',
+        },
+        {
+            title: 'Stream URL',
+            dataIndex: 'streamUrl',
+            key: 'streamUrl',
+        },
+        {
+            title: 'Image URL',
+            dataIndex: 'imageUrl',
+            key: 'imageUrl',
+        },
+        {
+            title: 'Play Count',
+            dataIndex: 'playCount',
+            key: 'playCount',
+        },
+        {
+            title: 'Actions',
+            key: 'action',
+            render: (_, record) => (
+                <Popconfirm
+                    title="Delete the song"
+                    description="Are you sure to delete this song?"
+                    onConfirm={() => handleDelete(record._id)}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <DeleteOutlined style={{ fontSize: '1.5rem', color: 'red' }} />
+                </Popconfirm>
+            ),
+        },
+    ];
+
     return (
         <div>
-            {loading ? (
-                <p>Loading data, please wait...</p>
-            ) : (
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Artist</th>
-                            <th>Stream URL</th>
-                            <th>Image URL</th>
-                            <th>Play Count</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.length === 0 ? (
-                            <tr>
-                                <td colSpan="6">No data available...</td>
-                            </tr>
-                        ) : (
-                            data.map((song) => (
-                                <tr key={song._id}>
-                                    <td>{song.title}</td>
-                                    <td>{song.artist.name}</td>
-                                    <td>{song.streamUrl}</td>
-                                    <td>{song.imageUrl}</td>
-                                    <td>{song.playCount}</td>
-                                    <td>
+            <Table
+                columns={columns}
+                dataSource={data}
+                loading={loading}
 
-                                        <button onClick={() => handleDelete(song._id)}>Delete</button>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-            )}
-            <div style={{ marginTop: '20px' }}>
-                <button onClick={handleAdd}>Add Song</button>
+            />
+            <div>
+                <Button type="primary" onClick={handleAdd}>Add Song</Button>
             </div>
         </div>
     );

@@ -1,19 +1,24 @@
 import React from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-import { NavLink } from 'react-router-dom';
+import { LockOutlined, UserOutlined, GoogleOutlined } from '@ant-design/icons';
+import { Button, Form, Input, message } from 'antd';
+import { NavLink, useNavigate } from 'react-router-dom';
+import register from '../apis/register';
+
 const SignUp = () => {
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+    const navigate = useNavigate()
+    const onFinish = async (values) => {
+        const res = await register(values)
+        if (res.ok) {
+            message.success("Dang ky thanh cong!")
+            navigate('/login')
+        }
     };
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
             <h2>Đăng Ký</h2>
             <Form
-                name="login"
-                initialValues={{
-                    remember: true,
-                }}
+                name="signUp"
                 style={{
                     minWidth: 350,
                 }}
@@ -29,6 +34,18 @@ const SignUp = () => {
                     ]}
                 >
                     <Input prefix={<UserOutlined />} placeholder="Username" />
+                </Form.Item>
+                <Form.Item
+                    name="email"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your Email!',
+                            type: 'email'
+                        },
+                    ]}
+                >
+                    <Input prefix={<GoogleOutlined />} placeholder="Email" />
                 </Form.Item>
                 <Form.Item
                     name="password"

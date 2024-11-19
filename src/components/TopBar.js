@@ -1,49 +1,48 @@
-import React, { useState, useContext } from 'react';
+
 import SearchInput from './SearchInput';
 import Profile from './Profile';
 import Logo from './Logo';
-import Switch from './Switch';
-import { Layout } from 'antd';
-import { ThemeContext } from './ThemeContext';
+import { Layout, Button } from 'antd';
+import getUserInfo from '../utils/getUserInfo';
+import { useNavigate } from 'react-router-dom';
 
 const { Header } = Layout;
 
 const TopBar = () => {
-    const [value, setValue] = useState(false);
-    const { isDarkMode } = useContext(ThemeContext);
-    const themeStyles = {
-        background: isDarkMode ? '#333' : '#fff',
-        color: isDarkMode ? '#fff' : '#000'
-    };
+    const userInfo = getUserInfo()
+    const navigate = useNavigate()
 
     return (
-        <div style={themeStyles}>
-            <Header
-                style={{
-                    padding: 0,
-                    background: themeStyles.background,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    paddingLeft: "50px",
-                    paddingRight: "50px",
-                }}
-            >
-                <div style={{ flexGrow: '4', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginRight: '100px', marginLeft: '30px', paddingLeft: '300px' }}>
-                    <Logo />
-                    <SearchInput />
-                </div>
-                <div style={{ flexGrow: '1', display: 'flex', justifyContent: 'center', marginLeft: '10px', marginRight: '50px', paddingLeft: '70px', paddingRight: '70px' }}>
-                    <Switch
-                        isOn={value}
-                        handleToggle={() => setValue(!value)}
-                    />
-                </div>
-                <div style={{ flexGrow: '1', display: 'flex', justifyContent: 'center' }}>
-                    <Profile />
-                </div>
-            </Header>
-        </div>
+
+        <Header
+            style={{
+                padding: 0,
+                background: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                maxWidth: '100%'
+            }}
+        >
+
+            <div style={{ display: 'flex', alignItems: 'center', flex: '1', justifyContent: 'space-between', marginLeft: '50px', paddingRight: '200px' }}>
+                <Logo />
+                <SearchInput />
+
+            </div>
+            <div>
+
+                {userInfo && userInfo._id ?
+                    <Profile userInfo={userInfo} />
+                    : <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Button type='link' onClick={() => navigate('/login')}>Đăng nhập</Button>
+                        <Button type='link' onClick={() => navigate('/signup')}>Đăng ký</Button>
+                    </div>
+                }
+
+            </div>
+        </Header>
+
     );
 };
 

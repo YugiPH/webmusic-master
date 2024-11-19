@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
 import {
   HeartOutlined,
@@ -7,17 +7,10 @@ import {
   UnorderedListOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { ThemeContext } from './ThemeContext';
 
 const { Sider } = Layout;
 
 const SideBar = () => {
-
-  const { isDarkMode } = useContext(ThemeContext);
-  const themeStyles = {
-    background: isDarkMode ? '#333' : '#fff',
-    color: isDarkMode ? '#fff' : '#000'
-  };
 
   const navigate = useNavigate();
 
@@ -41,21 +34,21 @@ const SideBar = () => {
     ]),
   ];
   return (
-    <div style={themeStyles}>
+    <div >
       <Sider
-        theme={isDarkMode ? 'dark' : 'light'}
+        style={{ height: '100vh' }}
+        theme={'light'}
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
         <Menu
-          theme={isDarkMode ? 'dark' : 'light'}
+          theme={'light'}
           defaultSelectedKeys={['/']}
           mode="inline"
           items={items}
           style={{ height: '100%' }}
           onClick={(e) => navigate(e.key)}
-          className={isDarkMode ? 'menu-item-dark' : 'menu-item-light'}
         />
       </Sider>
 
