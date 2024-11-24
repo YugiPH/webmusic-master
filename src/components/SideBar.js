@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
 import {
   HeartOutlined,
-  HomeOutlined,
-  AppstoreOutlined,
-  UnorderedListOutlined,
+  HomeOutlined, PicLeftOutlined,
+  UnorderedListOutlined, PlusSquareOutlined
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import getUserInfo from '../utils/getUserInfo';
 
 const { Sider } = Layout;
 
 const SideBar = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const userInfo = getUserInfo()
+
 
   const [collapsed, setCollapsed] = useState(false);
 
@@ -26,13 +29,22 @@ const SideBar = () => {
   }
   const items = [
     getItem('Trang chủ', '/', <HomeOutlined />),
-    getItem('Bài hát yêu thích', '/favorite', <HeartOutlined />),
-    getItem('Danh sách phát', '/playlist', <UnorderedListOutlined />),
-    getItem('Khám phá', 'sub1', <AppstoreOutlined />, [
-      getItem('Thể loại', '/categories'),
-      getItem('Bảng xếp hạng', '/top'),
-    ]),
+    getItem('Thể loại', '/categories', <PicLeftOutlined />),
   ];
+
+  if (userInfo) {
+    items.push(
+      getItem('Bài hát yêu thích', '/favorite', <HeartOutlined />),
+      getItem('Danh sách phát', '/playlist', <UnorderedListOutlined />),
+      getItem('Thêm bài hát', '/top', <PlusSquareOutlined />)
+    );
+  }
+  const [selectedKey, setSelectedKey] = useState(location.pathname);
+
+  useEffect(() => {
+    setSelectedKey(location.pathname);
+  }, [location.pathname]);
+
   return (
     <div >
       <Sider
@@ -44,7 +56,7 @@ const SideBar = () => {
       >
         <Menu
           theme={'light'}
-          defaultSelectedKeys={['/']}
+          selectedKeys={[selectedKey]}
           mode="inline"
           items={items}
           style={{ height: '100%' }}

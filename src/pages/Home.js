@@ -2,45 +2,43 @@ import React, { useState, useEffect } from 'react';
 import SongCard from '../components/SongCard';
 import { Layout } from 'antd';
 import getUserInfo from '../utils/getUserInfo';
-import { getFavoriteSong } from '../apis/favoriteSong';
+import { getFavoriteId } from '../apis/favoriteSong';
+import { isSubset } from '../utils/compareArray';
+import getAllSongs from '../apis/getAllSongs';
 
 const { Content } = Layout;
 
 const Home = () => {
     const [data, setData] = useState([]);
-    const [favorite, setFavorite] = useState([]);
+    const [favoriteUser, setFavoriteUser] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const userInfo = getUserInfo()
+    const userInfo = getUserInfo();
+
     const fetchfavorite = async () => {
-        const response = await getFavoriteSong(userInfo._id)
+        const response = await getFavoriteId(userInfo._id)
         if (response.data) {
-            setFavorite(response.data.favoriteId)
+            setFavoriteUser(response.data.favoriteId)
         }
     }
+
+    const fetchAllSongs = async () => {
+        try {
+            const response = await getAllSongs()
+            if (response.data) {
+                setData(response.data);
+            }
+        } catch (error) {
+            console.error('Get all songs error: ', error);
+            setData([]);
+        } finally {
+            setLoading(false);
+        };
+    }
     useEffect(() => {
-        fetchfavorite()
-        fetch('http://localhost:8080/songs')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(responseData => {
-                if (Array.isArray(responseData.data) && responseData.data.length > 0) {
-                    setData(responseData.data);
-                } else {
-                    setData([]);
-                }
-            })
-            .catch(error => {
-                console.error('Không thể lấy được dữ liệu: ', error);
-                setData([]);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        if (userInfo)
+            fetchfavorite()
+        fetchAllSongs()
     }, []);
 
     return (
@@ -55,8 +53,8 @@ const Home = () => {
                             id={song._id}
                             title={song.title}
                             imageUrl={song.imageUrl}
-                            favoriteId={song.favoriteId}
-                        // isFavorite={}
+                            isFavorite={isSubset(favoriteUser, song.favoriteId)}
+                            fetchAllSongs={fetchAllSongs}
                         />
                     ))
                 )}
