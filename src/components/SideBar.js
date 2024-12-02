@@ -36,7 +36,6 @@ const SideBar = () => {
     items.push(
       getItem('Bài hát yêu thích', '/favorite', <HeartOutlined />),
       getItem('Danh sách phát', '/playlist', <UnorderedListOutlined />),
-      getItem('Thêm bài hát', '/top', <PlusSquareOutlined />)
     );
   }
   const [selectedKey, setSelectedKey] = useState(location.pathname);
@@ -48,7 +47,7 @@ const SideBar = () => {
   return (
     <div >
       <Sider
-        style={{ height: '100vh' }}
+        style={{ height: '100%' }}
         theme={'light'}
         collapsible
         collapsed={collapsed}

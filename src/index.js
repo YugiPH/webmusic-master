@@ -17,9 +17,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Favorite from './pages/Favorite';
 import Categories from './pages/Categories';
-import Top from './pages/Top';
 import CategoryDetail from './pages/CategoryDetail';
-import UploadPage from './pages/UploadPage';
 import PlayList from './pages/PlayList';
 
 // import admin
@@ -27,6 +25,8 @@ import AdminPortal from './admin/AdminPortal';
 import SongManage from './admin/song/SongManage';
 import AddSong from './admin/song/AddSong';
 import EditSong from './admin/song/EditSong';
+import DetailPlaylist from './pages/DetailPlaylist';
+import ManageArtist from './admin/artist/ManageArtist';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +50,10 @@ const router = createBrowserRouter([
         element: <Favorite />
       },
       {
+        path: "playlist/:id",
+        element: <DetailPlaylist />
+      },
+      {
         path: "playlist",
         element: <PlayList />
       },
@@ -62,15 +66,7 @@ const router = createBrowserRouter([
             element: <CategoryDetail />
           },
         ]
-      },
-      {
-        path: "top",
-        element: <Top />
-      },
-      {
-        path: "upload",
-        element: <UploadPage />
-      },
+      }
     ]
   },
 
@@ -104,6 +100,10 @@ const router = createBrowserRouter([
         {
           path: 'editsong',
           element: <EditSong />
+        },
+        {
+          path: 'artist',
+          element: <ManageArtist />
         },
       ]
   },

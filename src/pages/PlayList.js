@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { DeleteOutlined, EditOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Card, Input, message, Modal } from 'antd'
 import { createPlaylist, getAllPlaylists } from '../apis/playlist';
+import { useNavigate } from 'react-router-dom';
 
 const actions = [
     <EditOutlined key="edit" />,
-    <SettingOutlined key="setting" />,
     <DeleteOutlined key="delete" />,
 ];
 
 const PlayList = () => {
+    const navigate = useNavigate()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -70,13 +71,15 @@ const PlayList = () => {
             {playlists && playlists.length > 0 && playlists.map(playlist => {
                 return (
                     <Card
+                        key={playlist._id}
                         actions={actions}
                         style={{
                             minWidth: 300,
                         }}
                     >
-                        <Card.Meta
+                        <Card.Meta onClick={() => navigate(`/playlist/${playlist._id}`)}
                             title={playlist.title}
+                            style={{ cursor: 'pointer' }}
                         />
                     </Card>
                 )

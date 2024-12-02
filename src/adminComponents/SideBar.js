@@ -22,11 +22,22 @@ const SideBar = () => {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={['songs']}
                     items={[
-                        { key: '1', icon: <PlayCircleOutlined />, label: <Link to="song">Bài Hát</Link> },
-                        { key: '2', icon: <OrderedListOutlined />, label: <Link to="/admin/nav2">Nav 2</Link> },
-                        { key: '3', icon: <UserOutlined />, label: <Link to="/admin/nav3">Nghệ Sĩ</Link> },
+                        {
+                            key: 'songs', icon: <PlayCircleOutlined />, label: <Link to="song">Bài Hát</Link>,
+                            children: [
+                                {
+                                    key: 'add-song',
+                                    label: <Link to="/admin/addsong">Thêm bài hát</Link>,
+                                },
+                                {
+                                    key: 'list-songs',
+                                    label: <Link to="/admin/addsong">Thêm bài hát</Link>,
+                                },
+                            ],
+                        },
+                        { key: 'artist', icon: <UserOutlined />, label: <Link to="/admin/artist">Nghệ Sĩ</Link> },
                     ]}
                 />
             </Sider>
