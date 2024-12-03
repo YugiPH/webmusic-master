@@ -67,7 +67,7 @@ const SongCard = ({ id, title, imageUrl, isFavorite, fetchAllSongs }) => {
           width: 150,
           height: 100,
 
-        }} alt="example" src={`http://localhost:8080/public/images/${imageUrl}`} onClick={() => navigate(`/playsong/${id}`)} />}
+        }} alt="example" src={imageUrl} onClick={() => navigate(`/playsong/${id}`)} />}
       >
         <Meta title={title} />
         {userInfo && userInfo._id &&

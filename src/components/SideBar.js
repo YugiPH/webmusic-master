@@ -29,7 +29,7 @@ const SideBar = () => {
   }
   const items = [
     getItem('Trang chủ', '/', <HomeOutlined />),
-    getItem('Thể loại', '/categories', <PicLeftOutlined />),
+    getItem('Thể loại', '/genre', <PicLeftOutlined />),
   ];
 
   if (userInfo) {

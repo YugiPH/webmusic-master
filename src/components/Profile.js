@@ -13,6 +13,21 @@ const Profile = ({ userInfo }) => {
         <h3 style={{ margin: 'auto' }}>{userInfo.username}</h3>
       ),
     },
+    ...(userInfo.role === 'admin' ? [
+      {
+        key: 'admin',
+        label: (
+          <Button
+            type='link'
+            onClick={() => {
+              navigate('/admin/song');
+            }}
+          >
+            Quản trị
+          </Button>
+        ),
+      }
+    ] : []),
     {
       key: 'logout',
       label: (

@@ -16,17 +16,18 @@ import SongPages from './pages/SongPages';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Favorite from './pages/Favorite';
-import Categories from './pages/Categories';
-import CategoryDetail from './pages/CategoryDetail';
 import PlayList from './pages/PlayList';
 
 // import admin
-import AdminPortal from './admin/AdminPortal';
 import SongManage from './admin/song/SongManage';
 import AddSong from './admin/song/AddSong';
 import EditSong from './admin/song/EditSong';
 import DetailPlaylist from './pages/DetailPlaylist';
 import ManageArtist from './admin/artist/ManageArtist';
+import AddGenre from './admin/genre/AddGenre';
+import ListGenres from './admin/genre/ListGenres';
+import Genre from './pages/Genre';
+import DetailGenre from './pages/DetailGenre';
 
 const router = createBrowserRouter([
   {
@@ -58,15 +59,13 @@ const router = createBrowserRouter([
         element: <PlayList />
       },
       {
-        path: "categories",
-        element: <Categories />,
-        children: [
-          {
-            path: ":categoryId",
-            element: <CategoryDetail />
-          },
-        ]
-      }
+        path: "genre",
+        element: <Genre />,
+      },
+      {
+        path: "genre/:id",
+        element: <DetailGenre />
+      },
     ]
   },
 
@@ -87,7 +86,7 @@ const router = createBrowserRouter([
       [
         {
           index: true,
-          element: <AdminPortal />
+          element: <SongManage />
         },
         {
           path: 'song',
@@ -105,6 +104,14 @@ const router = createBrowserRouter([
           path: 'artist',
           element: <ManageArtist />
         },
+        {
+          path: 'addgenre',
+          element: <AddGenre />
+        },
+        {
+          path: 'genres',
+          element: <ListGenres />
+        }
       ]
   },
 ]);

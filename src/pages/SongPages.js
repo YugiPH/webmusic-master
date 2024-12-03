@@ -36,13 +36,13 @@ const SongPages = () => {
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
             <div>
                 <Avatar
-                    src={<img src={`http://localhost:8080/public/images/${song.imageUrl}`} alt="avatar" />}
+                    src={<img src={song.imageUrl} alt="avatar" />}
                     size={350}
                 />
                 <h2 style={{ textAlign: 'center' }}>{song.title}</h2>
                 <h3 style={{ textAlign: 'center' }}>{song.artist.name}</h3>
             </div>
-            <PlaySong url={`http://localhost:8080/public/songs/${song.streamUrl}`} />
+            <PlaySong url={song.streamUrl} />
         </div>
     );
 };

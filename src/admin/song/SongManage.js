@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Table, Button } from 'antd';
+import { Table } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons'
 import { Popconfirm, message } from "antd";
 
@@ -8,7 +7,6 @@ import { Popconfirm, message } from "antd";
 const SongManage = () => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         fetchSongs();
@@ -23,7 +21,6 @@ const SongManage = () => {
                 return response.json();
             })
             .then(responseData => {
-                console.log("Dữ liệu từ API:", responseData);
                 if (Array.isArray(responseData.data) && responseData.data.length > 0) {
                     setData(responseData.data.map(song => ({ ...song, key: song._id })));
                 } else {
@@ -39,14 +36,15 @@ const SongManage = () => {
             });
     };
 
-    const handleAdd = () => {
-        navigate('/admin/addsong');
-    };
-
-    const handleDelete = async (id) => {
+    const handleDelete = async (id, imagePublicId, streamPublicId) => {
         try {
             const response = await fetch(`http://localhost:8080/songs/${id}`, {
-                method: 'DELETE'
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: 'DELETE',
+                body: JSON.stringify({ imagePublicId, streamPublicId })
             });
             if (response.ok) {
                 message.success("Bài hát đã được xóa thành công");
@@ -68,23 +66,8 @@ const SongManage = () => {
         },
         {
             title: 'Artist',
-            dataIndex: ['artist', '_id'],
+            dataIndex: ['artist', 'name'],
             key: 'artist',
-        },
-        {
-            title: 'Stream URL',
-            dataIndex: 'streamUrl',
-            key: 'streamUrl',
-        },
-        {
-            title: 'Image URL',
-            dataIndex: 'imageUrl',
-            key: 'imageUrl',
-        },
-        {
-            title: 'Play Count',
-            dataIndex: 'playCount',
-            key: 'playCount',
         },
         {
             title: 'Actions',
@@ -93,7 +76,7 @@ const SongManage = () => {
                 <Popconfirm
                     title="Delete the song"
                     description="Are you sure to delete this song?"
-                    onConfirm={() => handleDelete(record._id)}
+                    onConfirm={() => handleDelete(record._id, record.imagePublicId, record.streamPublicId)}
                     okText="Yes"
                     cancelText="No"
                 >
@@ -109,11 +92,9 @@ const SongManage = () => {
                 columns={columns}
                 dataSource={data}
                 loading={loading}
+                rowKey={'_id'}
 
             />
-            <div>
-                <Button type="primary" onClick={handleAdd}>Add Song</Button>
-            </div>
         </div>
     );
 };

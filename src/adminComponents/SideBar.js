@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleOutlined, OrderedListOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Link, useNavigate } from 'react-router-dom';
+import { MenuFoldOutlined, MenuUnfoldOutlined, PlayCircleOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
 import { Button, Layout, Menu, theme, Tooltip } from 'antd';
 import { Outlet } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
 const SideBar = () => {
+    const navigate = useNavigate()
     const [collapsed, setCollapsed] = useState(false);
     const { token: { colorBgContainer, borderRadiusLG }, } = theme.useToken();
 
@@ -22,18 +23,31 @@ const SideBar = () => {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={['songs']}
+                    defaultSelectedKeys={['list-song']}
                     items={[
                         {
-                            key: 'songs', icon: <PlayCircleOutlined />, label: <Link to="song">Bài Hát</Link>,
+                            key: 'songs', icon: <PlayCircleOutlined />, label: <p>Bài hát</p>,
                             children: [
                                 {
-                                    key: 'add-song',
-                                    label: <Link to="/admin/addsong">Thêm bài hát</Link>,
+                                    key: 'list-song',
+                                    label: <Link to="song">Danh sách bài hát</Link>,
                                 },
                                 {
-                                    key: 'list-songs',
+                                    key: 'add-songs',
                                     label: <Link to="/admin/addsong">Thêm bài hát</Link>,
+                                },
+                            ],
+                        },
+                        {
+                            key: 'genres', icon: <PlayCircleOutlined />, label: <p>Thể loại</p>,
+                            children: [
+                                {
+                                    key: 'list-genres',
+                                    label: <Link to="genres">Danh sách thể loại</Link>,
+                                },
+                                {
+                                    key: 'add-genre',
+                                    label: <Link to="/admin/addgenre">Thêm thể loại</Link>,
                                 },
                             ],
                         },
@@ -67,11 +81,9 @@ const SideBar = () => {
                         <h1 style={{ margin: 0, color: 'black' }}>Welcome Admin!</h1>
                     </div>
                     <div style={{ display: 'flex', gap: '10px', paddingRight: '20px' }}>
-                        <Tooltip title="Log out">
-                            <Button type="text" style={{ height: '50px', width: '50px', }}>
-                                <LogoutOutlined />
-                            </Button>
-                        </Tooltip>
+
+                        <HomeOutlined style={{ fontSize: '1.5rem' }} onClick={() => navigate('/')} />
+
                     </div>
                 </Header>
                 <Content

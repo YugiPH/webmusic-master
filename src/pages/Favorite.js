@@ -60,6 +60,7 @@ const Favorite = () => {
                     songs.map(song => {
                         return (
                             <Card
+                                key={song._id}
                                 hoverable
                                 style={{
                                     width: 150
@@ -68,7 +69,7 @@ const Favorite = () => {
                                     width: 150,
                                     height: 100,
 
-                                }} alt="example" src={`http://localhost:8080/public/images/${song.imageUrl}`} onClick={() => navigate(`/playsong/${song._id}`)} />}
+                                }} alt="example" src={song.imageUrl} onClick={() => navigate(`/playsong/${song._id}`)} />}
                             >
                                 <Meta title={song.title} />
                                 <DeleteOutlined onClick={() => handleRemoveFavorite(song._id)}

@@ -1,20 +1,20 @@
 import React from 'react'
 import { Button, Form, Input, message } from 'antd';
-import { addArtist } from '../../apis/artist';
+import { createGenre } from '../../apis/genre';
 
-const ManageArtist = () => {
-    const handleAddArtist = async (name, bio) => {
-        const response = await addArtist({ name: name, bio: bio })
+const AddGenre = () => {
+    const handleAddGenre = async (name) => {
+        const response = await createGenre({ name: name })
         if (response.ok) {
             message.success('Thêm thành công!');
 
         } else {
-            message.error('Thêm tên ca sĩ thất bại!')
+            message.error('Thêm thể loại thất bại!')
         }
     }
 
     const onFinish = (values) => {
-        handleAddArtist(values.name, values.bio)
+        handleAddGenre(values.name)
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -27,7 +27,7 @@ const ManageArtist = () => {
             justifyContent: 'center'
         }}>
             <Form
-                name="Add Artist"
+                name="Add Genre"
                 labelCol={{
                     span: 8,
                 }}
@@ -43,33 +43,21 @@ const ManageArtist = () => {
                 autoComplete="off"
             >
                 <Form.Item
-                    label="Tên ca sĩ"
+                    label="Tên thể loại"
                     name="name"
                     rules={[
                         {
                             required: true,
-                            message: 'Nhập tên ca sĩ...',
+                            message: 'Nhập thể loại...',
                         },
                     ]}
                 >
                     <Input />
                 </Form.Item>
 
-                <Form.Item
-                    label="Mô tả"
-                    name="bio"
-                    rules={[
-                        {
-                            message: 'Vui lòng nhập mô tả!',
-                        },
-                    ]}
-                >
-                    <Input.TextArea />
-                </Form.Item>
-
                 <Form.Item label={null} wrapperCol={{ offset: 8 }}>
                     <Button type="primary" htmlType="submit">
-                        Thêm ca sĩ
+                        Thêm thể loại
                     </Button>
                 </Form.Item>
             </Form>
@@ -77,4 +65,4 @@ const ManageArtist = () => {
     )
 }
 
-export default ManageArtist
+export default AddGenre
