@@ -28,6 +28,7 @@ import AddGenre from './admin/genre/AddGenre';
 import ListGenres from './admin/genre/ListGenres';
 import Genre from './pages/Genre';
 import DetailGenre from './pages/DetailGenre';
+import SearchSong from './pages/SearchSong';
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
         path: "genre/:id",
         element: <DetailGenre />
       },
+      {
+        path: "search",
+        element: <SearchSong />
+      }
     ]
   },
 

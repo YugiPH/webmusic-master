@@ -3,10 +3,12 @@ import { Button, Form, Input, message } from 'antd';
 import { addArtist } from '../../apis/artist';
 
 const ManageArtist = () => {
+    const [form] = Form.useForm();
     const handleAddArtist = async (name, bio) => {
         const response = await addArtist({ name: name, bio: bio })
         if (response.ok) {
             message.success('Thêm thành công!');
+            form.resetFields()
 
         } else {
             message.error('Thêm tên ca sĩ thất bại!')
@@ -26,7 +28,7 @@ const ManageArtist = () => {
             display: 'flex',
             justifyContent: 'center'
         }}>
-            <Form
+            <Form form={form}
                 name="Add Artist"
                 labelCol={{
                     span: 8,

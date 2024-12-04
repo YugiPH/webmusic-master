@@ -147,6 +147,8 @@ const AddSong = () => {
                         ]}
                     >
                         <Select
+                            showSearch
+                            optionFilterProp="label"
                             placeholder='Chọn tên ca sĩ'
                             style={{
                                 width: '100%',
@@ -168,6 +170,8 @@ const AddSong = () => {
                         ]}
                     >
                         <Select
+                            showSearch
+                            optionFilterProp="label"
                             placeholder='Chọn thể loại'
                             style={{
                                 width: '100%',

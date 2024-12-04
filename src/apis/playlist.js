@@ -1,10 +1,11 @@
-export const getAllPlaylists = async () => {
-    const response = await fetch('http://localhost:8080/playlists', {
+export const getAllPlaylists = async (data) => {
+    const response = await fetch('http://localhost:8080/playlists/get-playlists', {
+        body: JSON.stringify(data),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        method: 'GET'
+        method: 'POST'
     });
     if (response.ok) {
         return response.json();

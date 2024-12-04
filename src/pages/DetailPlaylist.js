@@ -54,13 +54,13 @@ const DetailPlaylist = () => {
         <div style={{ display: 'flex', width: '100%', height: '100%', backgroundColor: 'white' }}>
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                 <Avatar
-                    src={<img src={`http://localhost:8080/public/images/${currentSong.imageUrl}`} alt="avatar" />}
+                    src={<img src={currentSong.imageUrl} alt="avatar" />}
                     size={400}
                 />
                 <h2>{currentSong.title}</h2>
                 <ReactAudioPlayer
                     style={{ width: '100%' }}
-                    src={`http://localhost:8080/public/songs/${currentSong.streamUrl}`}
+                    src={currentSong.streamUrl}
                     autoPlay
                     controls
                     onEnded={() => {

@@ -3,10 +3,12 @@ import { Button, Form, Input, message } from 'antd';
 import { createGenre } from '../../apis/genre';
 
 const AddGenre = () => {
+    const [form] = Form.useForm();
     const handleAddGenre = async (name) => {
         const response = await createGenre({ name: name })
         if (response.ok) {
             message.success('Thêm thành công!');
+            form.resetFields()
 
         } else {
             message.error('Thêm thể loại thất bại!')
@@ -26,7 +28,7 @@ const AddGenre = () => {
             display: 'flex',
             justifyContent: 'center'
         }}>
-            <Form
+            <Form form={form}
                 name="Add Genre"
                 labelCol={{
                     span: 8,

@@ -2,29 +2,30 @@ import Profile from './Profile';
 import Logo from './Logo';
 import { Layout, Button, Input, Flex } from 'antd';
 import getUserInfo from '../utils/getUserInfo';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { searchSong } from '../apis/song';
+import { useSearch } from '../context/searchContext';
+import { useGetSongBySearch } from '../context/songContext';
 
 const { Header } = Layout;
 
 const TopBar = () => {
     const userInfo = getUserInfo()
     const navigate = useNavigate()
-    const [searchParams, setSearchParams] = useSearchParams();
-    const search = searchParams.get("search") || "";
+    const { search, setSearch } = useSearch();
+    const { setSong } = useGetSongBySearch();
 
     const handleSearchChange = (e) => {
-        const newSearch = e.target.value;
-        if (newSearch) {
-            setSearchParams({ search: newSearch });
-        } else {
-            searchParams.delete("search");
-            setSearchParams(searchParams);
-        }
+        setSearch(e.target.value);
     };
 
+
     const handleClick = async () => {
-        await searchSong()
+        const response = await searchSong({ title: search })
+        if (response.ok) {
+            setSong(response.data)
+            navigate('/search')
+        }
     }
 
     return (
@@ -43,8 +44,12 @@ const TopBar = () => {
             <div style={{ display: 'flex', alignItems: 'center', flex: '1', justifyContent: 'space-between', marginLeft: '50px', paddingRight: '200px' }}>
                 <Logo />
                 <Flex style={{ width: '80%' }}>
-                    <Input value={search} onChange={(e) => handleSearchChange(e)} />
-                    <Button>Tìm kiếm</Button>
+                    <Input value={search} onChange={(e) => handleSearchChange(e)} onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            handleClick()
+                        }
+                    }} />
+                    <Button onClick={() => handleClick()}>Tìm kiếm</Button>
                 </Flex>
             </div>
             <div>

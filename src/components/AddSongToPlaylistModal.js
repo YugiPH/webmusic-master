@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { message, Modal, Select } from 'antd';
 import { addSongToPlaylist, getAllPlaylists } from '../apis/playlist';
 import { convertArray } from '../utils/convertArrayToSelect';
+import getUserInfo from '../utils/getUserInfo';
 
 const AddSongToPlaylistModal = ({ songId, isModalOpen, setIsModalOpen }) => {
     const [playlistId, setPlaylistId] = useState('')
+    const userInfo = getUserInfo()
     const handleChange = (value) => {
         setPlaylistId(value)
     };
@@ -28,7 +30,7 @@ const AddSongToPlaylistModal = ({ songId, isModalOpen, setIsModalOpen }) => {
     const [playlists, setPlaylist] = useState([]);
     const fetchAllPlaylists = async () => {
         try {
-            const response = await getAllPlaylists()
+            const response = await getAllPlaylists({ userId: userInfo._id })
             if (response.data) {
                 setPlaylist(response.data);
             }

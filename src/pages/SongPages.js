@@ -6,7 +6,6 @@ import { Avatar } from 'antd';
 const SongPages = () => {
     const { id } = useParams();
     const [song, setSong] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch(`http://localhost:8080/songs/${id}`)
@@ -24,12 +23,8 @@ const SongPages = () => {
                 console.error('Không thể lấy được dữ liệu: ', error);
                 setSong(null);
             })
-            .finally(() => {
-                setLoading(false);
-            });
     }, [id]);
-    console.log(song)
-    if (loading) return <p>Loading...</p>;
+
     if (!song) return <p>Không tìm thấy bài hát</p>;
 
     return (

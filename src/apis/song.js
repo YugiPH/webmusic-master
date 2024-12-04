@@ -19,12 +19,11 @@ export const countSong = async () => {
     }
 }
 
-export const searchSong = async (title) => {
+export const searchSong = async (data) => {
     try {
-        const response = await fetch('http://localhost:8080/songs/search' + new URLSearchParams({
-            search: title
-        }).toString(),
+        const response = await fetch('http://localhost:8080/songs/search',
             {
+                body: JSON.stringify(data),
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'

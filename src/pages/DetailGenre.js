@@ -34,7 +34,7 @@ const DetailGenre = () => {
     }, []);
 
     return (
-        <div>
+        <div style={{ backgroundColor: 'white', display: 'flex', width: '100%', gap: '1rem', padding: '24px' }}>
             {data.map(song => (
                 <SongCard
                     key={song._id}
